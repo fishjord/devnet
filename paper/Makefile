@@ -1,8 +1,8 @@
-writeup.pdf : writeup.ps
-	ps2pdf writeup.ps writeup.pdf
+ijcnn_submitted.pdf : ijcnn_submitted.ps
+	ps2pdf ijcnn_submitted.ps ijcnn_submitted.pdf
 
-writeup.ps : writeup.dvi
-	dvips -o writeup.ps -G0 -tletter writeup.dvi
+ijcnn_submitted.ps : ijcnn_submitted.dvi
+	dvips -o ijcnn_submitted.ps -G0 -tletter ijcnn_submitted.dvi
 
-writeup.dvi : writeup.tex
-	latex writeup.tex
+ijcnn_submitted.dvi : ijcnn_submitted.tex
+	latex ijcnn_submitted.tex

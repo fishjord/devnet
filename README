@@ -1,0 +1,14 @@
+Jordan & Lisa's development network implementation with rejection option for novel patterns.
+
+All source code is in the src/ directory.  The program is implemented in Python (using python 2.7) and makes use of numpy's vector math functions.  The roc curve generation code also makes use of matplotlib.
+
+src/
+  main.py - main program (same as hw3, with two new options to set the rthresh and max bad dimensions ratio options)
+  dn.py - main dev network code and classes
+  dn_utils.py - helper functions and constants for the dev network
+scripts/
+  Utility scripts for interacting with input and output from the main DN
+paper/
+  Paper submitted to IJCNN '13
+sandbox/
+  various scripts with a single minded purpose, not heavily tested
