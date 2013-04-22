@@ -1,0 +1,158 @@
+#!/usr/bin/python
+
+import sys
+sys.path.append("scripts/")
+
+from dn_utils import read_face, read_faces
+import dn
+import argparse
+import os
+import random
+import pickle
+
+def split_img_name(fname):
+    n = os.path.split(fname)[-1]
+    if "-" in n:
+        return n.split("-")[0]
+    else:
+        return n.split(".")[0][:-2]
+
+def read_all_faces(training_file):
+    labels = []
+    people_images = []
+    bg_path = None
+    imgs = []
+
+    for person, img, path in read_faces(training_file):
+        if person >= len(people_images):
+            if not bg_path:
+                bg_path = os.path.join(os.path.split(path)[0], "background1.raw")
+            labels.append(split_img_name(path))
+            people_images.append([])
+
+
+        face_img = read_face(path)
+        imgs.append((int(person), face_img))
+        people_images[person].append(face_img)
+    bg_img = read_face(bg_path)
+
+    labels.append("bg")
+
+    return imgs, labels, bg_img, "bg"  
+
+def first_epoch_img_shuffle(imgs):
+    people = {}
+    img = random.shuffle(imgs)
+
+    for person, face in imgs:
+        if person not in people:
+            people[person] = []
+        people[person].append(face)
+
+    ret_imgs = []
+
+    while len(people) > 0:
+        keys = people.keys()
+        for person in keys:
+            face = people[person].pop()
+            if len(people[person]) == 0:
+                del people[person]
+        
+            ret_imgs.append((person, face))
+
+    return ret_imgs
+
+def train_net(training_file, stem, epochs, n):
+    imgs, labels, bg_img, bg_label = read_all_faces(training_file)
+
+    total_images = len(imgs)
+
+    out = open("%s_out.txt" % stem, "w")
+    net = dn.DN(n, len(bg_img), bg_img, bg_label, labels)
+
+    print >>out, "Percentage of images represented by starting neurons: %s (people: %s)" % ((n * n) / float(total_images), (n * n) / (len(labels) - 1))
+
+    for i in range(epochs):
+        if i == 0:
+            imgs = first_epoch_img_shuffle(imgs)
+            print >>out, "first epoch image order:\n%s" % "\n".join(["(person: %s)" % x[0] for x in imgs])
+        else:
+            random.shuffle(imgs)
+        for j in range(len(imgs)):
+            person = imgs[j][0]
+            face = imgs[j][1]
+            c = net.learn(face, labels[person])
+
+            print >>out, "EPOCH: %d Input face: %s, response: %s" % (i, person, c)
+
+        pickle.dump(net, open("%s_epoch_%s.dn" % (stem, i), "wb"))
+
+    return net
+
+def main():
+    parser = argparse.ArgumentParser(description="DN training/evaluation tool")
+    parser.add_argument("-l", dest="epochs", type=int, help="Number of learning epochs")
+    parser.add_argument("-Y", dest="n", type=int, help="Number of neurons in the hidden layer (c = n * n)")
+    parser.add_argument("-f", dest="infile", type=str, help="Input training/testing file name (required)")
+    parser.add_argument("-d", dest="netfile", type=str, help="Input network file for testing/output network file for training (required)")
+    parser.add_argument("-o", dest="stem", type=str, help="Report output file (required)")
+    parser.add_argument("-r", dest="rthresh", type=float, default=.3, help="Threshold for considering a dimension 'too novel'")
+    parser.add_argument("-m", dest="max_below_thresh", type=float, default=.4, help="Ratio of dimensions that must be 'too novel' for a neuron to be 'unsure'")
+
+    args = parser.parse_args()
+
+    if not args.netfile or not args.infile or not args.stem or (args.epochs and not args.n):
+        parser.print_help()
+        sys.exit(1)
+
+    if args.epochs:
+        net = train_net(args.infile, args.stem, args.epochs, args.n)
+        pickle.dump(net, open(args.netfile, "wb"))
+    else:
+        net = pickle.load(open(args.netfile, "rb"))
+        net.rthresh = args.rthresh
+        net.max_low_conf_ratio = args.max_below_thresh
+
+        out = open("%s_results.txt" % args.stem, "w")
+        print >>out, "#Input image\tNearest Neighbor\tcorrect?"
+
+        fp = 0
+        fn = 0
+        tp = 0
+        tn = 0
+
+        corr = 0
+
+        for person, img, path in read_faces(args.infile):
+            name = split_img_name(path)
+            face = read_face(path)
+
+            labels = net.perform(face)
+
+            if len(labels) == 0:
+                label = "rejected"
+            else:
+                label = labels[0]
+
+            if name not in net.labels:
+                name = "rejected"
+
+            if label == name:
+                corr += 1
+
+            if label == "rejected":
+                if name == "rejected":
+                    tn += 1
+                else:
+                    fn += 1
+            elif name == "rejected":
+                fn += 1
+            else:
+                tp += 1
+
+            print >>out, "%s\t%s\t%s\t%s" % (os.path.split(path)[-1], name, label, name == label)
+
+        print >>sys.stderr, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s" % (args.netfile, args.rthresh, args.max_below_thresh, tp, tn, fp, fn, corr, corr / float(tp + tn + fp + fn), tp + tn + fp + fn)
+
+if __name__ == "__main__":
+    main()
