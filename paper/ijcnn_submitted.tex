@@ -120,7 +120,7 @@ distributed, incremental, automatic version of ROC.
 \section{Introduction}
 
 Two types of problems are well studied in pattern recognition: classification and detection.   
-In a classification problem, all possible inputs belong to one of the $n$ classes.   The task is to determine 
+In a classification problem, all possible inputs belong to one of $n$ classes.   The task is to determine 
 which class each input most likely belongs to.   In a detection problem, the simplest case is a two-set
 problem: acceptable (admissible) set and rejection set.   The task is to determine whether each input is
 admissible or not.   Face detection is a widely studied task, where the admissible set consists of faces and
@@ -129,66 +129,38 @@ the rejection set consists of all the non-faces.
 In the work here, we address both problems using a unified neural network framework --- Developmental Networks (DN) \cite{WengNAI12}.    The environment teaches the DN to have two types of actions, 
 rejection or acceptance.  For accepted case, the network produce the most likely class.    For $n$ admissible
 classes, the DN has $n+1$ neurons in the motor (action) area $Z$ which is used for output and input.
-If the teacher teaches DN, the desired output for the current input is fed to the motor area $Z$ as 
-supervised input to DN.  A high novelty detected indicates that the input should be rejected. 
+If the teacher teaches the DN, the desired output for the current input is fed to the motor area $Z$ as 
+supervised input to the DN.  A high novelty detected indicates that the input should be rejected. 
 
 Inspired by neuromodulation in the brain wherein different types of
-neurotransmitters are used to represent different types of statistic.
+neurotransmitters are used to represent different types of statistics.
 We model the effects of two types of neural transmitters, Acetylcholine (Ach) and Norepinenephrine (NE).
 
-Before we discuss novelty detection, we need to discuss the base system.   
-There are two types of base systems, symbolic models and emergent models.  
-The former is often called statistical models.  The latter is often called connectionist (neural nets) models. 
-
-The term ``connectionist'' is misleading in distinguishing 
-symbolic models and ANNs, since a probability based symbolic model is also a network whose representation is also distributed.  Weng 2011 \cite{WengRepRev12} proposed two classes, symbolic models and emergent models.  
-By definition \cite{WengRepRev12}, an {\em emergent representation} emerges autonomously from system's  interactions with the {\em external} (outside the skull) world and
+By definition \cite{WengRepRev12}, an {\em emergent representation} develops autonomously from system's  interactions with the {\em external} (outside the skull) world and
 the {\em internal world} (inside the skull) via the brain's sensors and
 effectors without using the handcrafted (or gene-specified) content or the handcrafted 
 boundaries of internal modules defined by extra-body concepts.
-
-Marvin Minsky 1991 \cite{Minsky91} and others argued that symbolic models are logic and neat, but 
- connectionist models are analogical and scruffy.   Such criticisms have different ways of characterization, but
- we can use a simple sentence ``neural networks do not abstract well.''  Clearly, a lot of new work has been
- done for neural network since then (e.g., see a recent review \cite{WengRepRev12}).   However, this image of ANN has not fundamentally changed in the larger research community of intelligence modeling, natural intelligence
- and artificial intelligence.  For example, at the David Rumelhart Memorial talk August 3, 2011 during the International Joint Conference on Neural Networks, Michael I. Jordan started with a statement that neural networks do not abstract well and he will talk about symbolic methods today.  Jordan did some work on neural networks in the 1980s  \cite{Jordan86}. 
  
-Weng 2011 \cite{WengWhy11} established theoretically based on DN that although DN is an emergent model,
+Weng \cite{WengWhy11} established on a theoretical basis that although a DN is an emergent model,
 it can abstract as well as any symbolic model since it can learn any large and complex finite
-automaton (FA) incrementally from the observation of  the input-put activities of the FA operation.
-Furthermore, the DN learning is immediate and error free for all the sequences that the FA has demonstrated.
-Furthermore, the DN can generalize to all other sequences that have not learned by the DN or experienced by
+automaton (FA) incrementally from the observation of the input-output activities of the FA's operation.
+Furthermore, DN learning is immediate and error free for all sequences that the FA has demonstrated.
+Furthermore, the DN can generalize to all other sequences that have not been learned by the DN or experienced by
 the FA, but are state-equivalent in the sense of FA.   This is because each FA maps all possible 
 input sequences into $n$ states, where $n$ is the number of states in the FA.  Typically, most of
-such sequences have not been observed by the FA, showing a high power of state-based generalization. 
+such sequences have not been observed by the FA, showing the high power of state-based generalization. 
   
-In the following, we briefly discuss these two types of models, symbolic and emergent. 
+In the following two sections we briefly discuss these two types of models, symbolic and emergent. 
 
 \subsection{Symbolic models}
 Given a task, a human designer in Artificial Intelligence (AI) \cite{Soar87,Hawkins09} or Cognitive Science \cite{Anderson93,Tenenbaum06} handcrafts a Symbolic Network (SN), using handpicked task-specific 
-concepts as symbols.   The ``common denominator'' network underlying many such SNs is the Finite Automaton (FA) whose probabilistic extensions include  
-the Hidden Markov Model (HMM), the Partially Observable Markov Decision Processes (POMDP)
-and the Bayesian Nets (also called belief nets, semantic nets, and graphical models).   
-
-\begin{figure}[tb]
-     \centering
-      \includegraphics[width=3.4in]{figs/SNvsDN-diagrams}
-\caption{\protect\small  Comparison between a symbolic FA (or SN) and an emergent DN.
-(a) Given a task, an FA (or SN), symbolic, handcrafted by the human programmer using a static symbol set.  
-(b)  A DN, which incrementally learns the FA but takes sensory images directly and produces effector images directly.  Without given any task, a human designs the general-purpose Developmental Program (DP) which 
-resides in the DN as a functional equivalent of the ``genome'' that regulates the development --- fully autonomous inside the DN.}
- \label{FG:SNvsDN-diagrams}
-\end{figure}
-
-Markou \& Singh 2003 \cite{Markou03s} gave a review of novelty detection using statistical approaches --- symbolic models. 
-
-Such an FA is powerful by recursively directing many different sensory sequences (e.g., ``kitten'' and ``young cat'') into the same equivalent state (e.g., $z_3$) and its future processing is always based on such an equivalence.  For example, state $z_4$  means that the last meaning of all input subsequences that end at 
-$z_4$ is ``kitten looks'' or equivalent.   However, the resulting machine does not truly understand the symbolic 
-concepts and is unable to learn new concepts beyond possible re-combinations of handpicked symbols.   
+concepts as symbols.   The ``common denominator'' network underlying many such SNs is a Finite Automaton (FA) whose probabilistic extensions include  
+ Hidden Markov Models (HMM), the Partially Observable Markov Decision Processes (POMDP)
+and Bayesian Nets (also called belief nets, semantic nets, and graphical models). Markou \& Singh \cite{Markou03s} gave a review of novelty detection using statistical approaches. 
 
 \subsection{Emergent networks}
 
-An emergent representation emerges autonomously from system's  interactions with the {\em external} world (outside the brain or network) and
+An emergent representation emerges autonomously from a system's interactions with the {\em external} world and
 the {\em internal world} via its sensors and
 its effectors without using the handcrafted (or gene-specified) content or the handcrafted 
 boundaries for concepts about the extra-body environments.
@@ -199,39 +171,12 @@ representations, such as network connection patterns, multiple synaptic weights,
 through the interactions between the learner system and its environment.   
 However, it is unclear how a recurrent network can model a brain.  
 
-Markou \& Singh 2003 \cite{Markou03} gave a review of novelty detection using neural networks --- mainly 
+Markou \& Singh \cite{Markou03} gave a review of novelty detection using neural networks --- mainly 
 emergent models. 
-
-
-\begin{figure}[tb]
-     \centering
-      \includegraphics[width=3.4in]{figs/FAvsED-Lan2}
-\caption{\protect\small  Conceptual correspondence between an Finite Automaton (FA) with the
-corresponding DN.   (a) An FA, handcrafted and static.  
-(b)  A corresponding DN that simulates the FA. 
- It was taught to produce the same input-out relations as the FA in (a).
-A symbol (e.g., $z_2$) in (a) corresponds to an image (e.g., $(z_1, z_2, ... , z_4) = (0, 1, 0, 0)$) in (b).
-}
- \label{FG:FAvsED}
-\end{figure} 
-
-\section{Developmental Networks}
-\label{SE:DN}
-Weng 2010 \cite{WengIJCNN10} discussed that
-a DN can simulate any FA.   
 
 \subsection{DN architecture}
 
-A basic DN, has three areas, the sensory area $X$, the internal (brain) area $Y$ and the motor area $Z$.
-An example of DN is shown in Fig.~\ref{FG:FAvsED}(b).   
-The internal neurons in $Y$ have bi-directional connection with both $X$ and $Z$.  
-
-The DP for DNs is task-nonspecific as suggested for the brain in \cite{WengScience} 
-(e.g., not concept-specific or problem specific).   
-In contrast to a static FA, the motor area $Z$ of a DN can be directly observed by the environment (e.g., by the teacher) and thus can be calibrated through interactive teaching from the environment.   
-The environmental concepts are learned incrementally through interactions with the environments.  
-For example, in Fig.~\ref{FG:FAvsED}(b), the ``young'' object makes the pixels 2 and 4 bright and all other green pixels dark.  However, such 
-an image from the ``young'' object is not known during the programming time for the DP.   
+A basic DN has three areas, the sensory area $X$, the internal (brain) area $Y$ and the motor area $Z$.  The internal neurons in $Y$ have bi-directional connection with both $X$ and $Z$.  
 
 In principle, the $X$ area can model any sensory modality (e.g., vision, audition, and touch). 
 The motor area $Z$ serves both input and output.  When the environment supervises $Z$, $Z$ is the input
@@ -251,38 +196,28 @@ The most basic function of an area $Y$ seems to be prediction --- predict the si
 space and time.   The prediction applies when part of a bank is not supervised. 
 The prediction also makes its bank less noisy if the bank can generate its own signals (e.g., $X$).    
 
-Although being convenient for studying infinitesimal changes (see, e.g., \cite{Izhikevich07}), a continuous time model  seems not very effective to explain network abstraction.   In the following, $\delta$ is consider a unit, so we denote the time by integers $t=0, 1, 2, ...$.  
+Although being convenient for studying infinitesimal changes (see, e.g., \cite{Izhikevich07}), a continuous time model  seems not very effective to explain network abstraction.   In the following, $\delta$ is consider a unit, so we denote the time by integers $\delta=0, 1, 2, ...$.  
 
-The DN algorithm is as follows.  
-Input areas: $X$ and $Z$.  Output areas: $X$ and $Z$.   The dimension and representation of $X$ and $Y$ areas are hand designed based on the sensors and effectors of the robotic agent or biologically regulated by the genome.   
-$Y$ is skull-closed inside the brain, not directly accessible  by the external world after the birth.     
+A DN operates as follows.  
+Input areas: $X$ and $Z$.  Output areas: $X$ and $Z$.   The dimension and representation of $X$ and $Y$ areas are hand designed based on the sensors and effectors of the robotic agent or biologically regulated by the genome. $Y$ is skull-closed inside the brain, not directly accessible  by the external world after the birth.     
 \begin{enumerate}
-\item At time $t=0$, for each area $A$ in $\{X, Y, Z\}$, initialize 
-its adaptive part $N=(V, G)$ and the response vector $\r$, where $V$ contains all the synaptic weight vectors and $G$ stores all the neuronal ages.   For example, use the generative DN method discussed below. 
-\item At time $t=1, 2, ... $, for each $A$ in $\{X, Y, Z\}$ repeat: 
+\item At time $\delta=0$, for each area $A$ in $\{X, Y, Z\}$, initialize 
+its adaptive part $N=(V, G)$ and the response vector $\r$, where $V$ contains all the synaptic weight vectors and $G$ stores all the neuronal ages, in biological neurons.
+\item At time $\delta=1, 2, ... $, for each $A$ in $\{X, Y, Z\}$ repeat: 
 \begin{enumerate}
-\item Every area $A$ performs mitosis-equivalent if it is needed, and initialize the weight vector of the new neuron using its bottom-up and top-down inputs $\b$ and $\t$, respectively.
 \item Every area $A$ computes its area function $f$, described below, 
 \begin{equation}
 (\r', N') = f(\b, \t, \r, N)
 \end{equation}
-where $\r'$ is the new response vector of $A$.  
+where $\r'$ is the new response vector of $A$, $\b$ is the bottom-up input to $A$ and $\t$ is the top-down input to $A$.  
 \item For every area $A$ in $\{X, Y, Z\}$, $A$ replaces: $N\leftarrow N'$ and $\r \leftarrow \r'$.
 \end{enumerate}
 \end{enumerate}
 
-$Y$ is the large hidden area of DN.  If $X$ is a sensory area, $\x \in X$ is always supervised.   
-The $\z \in Z$ is supervised only when the 
-teacher chooses to.   Otherwise, $\z$ gives (predicts) effector output.  
-
-A generative DN (GDN) automatically generates neurons in the $Y$ area.  If $(\b, \t)$ is observed for the first time (the pre-response of the top-winner is not 1) by 
-the area $Y$, $Y$ adds (e.g., equivalent to mitosis and cell death, spine growth and death, and neuronal recruitment) a $Y$ neuron whose synaptic weight vector is 
-$(\b, \t)$ with its neuronal age initialized to 1.   The idea of adding neurons is similar to ART and Growing Neural Gas but they do not take action as input and are not state-based. 
+$Y$ is the large hidden area of DN.  If $X$ is a sensory area, $\x \in X$ is always supervised. The $\z \in Z$ is supervised only when the teacher chooses to.   Otherwise, $\z$ gives (predicts) effector output.  
 
 \subsection{Unified DN area function}
-
-Each area $A$ has a
-weight vector $\v= (\v_b, \v_t)$.  Its pre-response value is:
+Each area $A$ has a weight vector $\v= (\v_b, \v_t)$ where $\v_b$ is the set of weights associated with bottom-up inputs and $\v_t$ is the set of weights associated with the top-down inputs for $A$.  Its pre-response value is:
 \begin{equation}
 \label{EQ:pre-response}
 r (\v_b, \b, \v_t, \t)  
@@ -301,129 +236,20 @@ This pre-response is inspired by how each neuron takes many lines of input from 
 generalize across many different vectors that are otherwise simply different as with symbols in an FA.  The normalization of the bottom-up part and the top-down part separately is for both the bottom-up source and top-down source
 to be taken into account, regardless the dimension and magnitude of each source. 
 
-To simulate lateral inhibitions (winner-take-all) within each area $A$, top $k$ winners fire.  Considering $k=1$, the winner neuron $j$ is identified by:
+To simulate lateral inhibitions (winner-take-all) within each area $A$, the $k$ neurons with the highest response fire and the rest are suppressed (response set to 0).  Considering $k=1$, the winner neuron $j$ is identified by:
 \begin{equation}
 j = \mbox{arg}\max_{1\le i \le c}  r (\v_{bi}, \b, \v_{ti}, \t) .
 \label{EQ:jmax}
 \end{equation}
-The area dynamically scale top-k winners  so that the top-k respond with values in $(0, 1]$.   
+The area dynamically scale top-k winners so that the top-k respond with values in $(0, 1]$.   
 For $k=1$, only the single winner fires with response value 
 $y_j=1$ (a pike) and all other neurons in $A$ do not fire.  The response value $y_j$ approximates the 
 probability for $\dot{\p} $ to fall into the Voronoi region of its $\dot{\v}_j$ where the ``nearness'' 
-is $r (\v_b, \b, \v_t, \t)$.   
+is $r (\v_b, \b, \v_t, \t)$.
 
-\subsection{DN learning: Hebbian}
-  
-All the connections in a DN are learned incrementally 
-based on Hebbian learning --- co-firing of the pre-synaptic activity $\dot{\p}$ and the
-post-synaptic activity $y$ of the firing neuron.   If the pre-synaptic end and the post-synaptic
-end fire together, the synaptic vector of the neuron has a synapse gain $y\dot{\p}$.  
-Other non-firing neurons do not modify their memory.   
-When a neuron $j$ fires, its firing age is incremented $n_j \leftarrow n_j+1$ and then
-its synapse vector is updated by a Hebbian-like mechanism:  
-\begin{equation}
-\v_j \leftarrow w_1(n_j) \v_j + w_2(n_j) r_j \dot{\p}
-\label{EQ:learn}
-\end{equation}
-where $w_2 (n_j)$ is the learning rate depending on the firing age (counts) $n_j $ of the neuron $j$ and $w_1(n_j)$ is the retention rate with $w_1(n_j) + w_2(n_j) \equiv 1$. 
-The simplest version of $w_2(n_j)$ is $w_2(n_j) = 1/ n_j$ which corresponds to:
-\begin{equation}
- \v_j ^{(i)} = \frac{i-1}{i} \v_j^{(i-1)} + \frac{1}{i} 1 \dot{\p}(t_{i}), i = 1, 2, ... , n_j, \nonumber
-\end{equation}
- where $t_i$ is the firing time of the post-synaptic neuron $j$. 
-The above is the recursive way of computing the batch average:
-\begin{equation}
- \v_j ^{(n_j)} = \frac{1}{n_j} \sum_{i=1}^{n_j} \dot{\p}(t_i) \nonumber
-\label{EQ:sum} 
- \end{equation}
- which is important for the proof of the optimality of DN in Weng 2011 \cite{Weng3ThmRpt11}.
- 
- The initial condition is as follows.   The smallest $n_j$ in Eq.~\eqref{EQ:learn}
-   is 1 since $n_j=0$ after initialization.  When $n_j=1$, $\v_j$ on the right side is used for pre-response 
-competition but does not affect $\v_j$ on the left side since $w_1(1) = 1-1=0$.
+For more information related to Development Networks see \cite{WengIJCNN11,Weng3ThmRpt11}.
 
-A component in the gain vector $y_j \dot{\p}$ is zero if the corresponding component in $\dot{\p}$ is zero.  Each 
-component in $\v_j$ so incrementally computed is the estimated probability for the pre-synaptic neuron  
-to fire under the condition that the post-synaptic neuron fires.  
-
-\subsection{GDN area functions}
-
-For simplicity, let us consider $k=1$ for top-$k$ competition.   
-\begin{algorithm}[$Y$ area function]  
-\begin{enumerate}
-\item Every neuron computes pre-response using Eq.~\eqref{EQ:pre-response}.  
-\item Find the winner neuron $j$ using Eq.~\eqref{EQ:jmax}.  
-\item If the winner pre-response is less than 0.9999, generate a $Y$ neuron using the input $\dot{\p}$ as the initial weight with age 0.  
-The new $Y$ neuron is the winner for sure. 
-\item The winner neuron $j$ increments its age: $n_j \leftarrow n_j+1$, fires with $y_j=1$, and  updates its synaptic vector, using Eq.~\eqref{EQ:learn}.
-\item All other neurons do not fire, 
-$y_i=0$, for all $i\neq j$, and do not advance their ages. 
-\end{enumerate}
-\end{algorithm}
-
-\begin{algorithm}[$Z$ Area function]  This version has $k=1$ for top-$k$ competition within each
-concept zone.   
-\begin{enumerate}
-\item If the dimension of $Y$ has not been incremented, do: 
-\begin{enumerate}
-\item Every neuron computes pre-response using Eq.~\eqref{EQ:pre-response}.
-\item Find the winner neuron $j$ using Eq.~\eqref{EQ:jmax}.
-\end{enumerate}
-Otherwise, do the following:
-\begin{enumerate}
-\item Supervise the pre-response of every neuron to be 1 or 0 as desired. 
-\item Add a dimension for the weight vector of every neuron, initialized to be 0, which may be immediately updated below.
-\end{enumerate}
-\item Each winner or supervised-to-fire neuron $j$ increment its age: $n_j \leftarrow n_j+1$, fire with $z_j=1$, and  updates its synaptic vector, using Eq.~\eqref{EQ:learn}.
-\item All other neurons do not fire, 
-$z_i=0$, for all $i\neq j$, and do not advance their ages. 
-\end{enumerate}
-\end{algorithm}
-
-The $Y$ area function and the $Z$ function are basically the same.   $Z$ can be supervised but 
-$Y$ cannot since it is inside the closed ``skull''.   
-During the simple mode of learning discussed here, neurons responding for
-backgrounds are suppressed (not attending), so that no neurons learn the background.   
-
-\section{DN Abstraction and Optimality}
-\label{SE:motivation}
-
-The Theorem 1 in Weng 2011 \cite{WengIJCNN11,Weng3ThmRpt11} established the following
-theoretical results.  
-
-Suppose that the $\x$ and $\z$ codes for the FA are similar to those from the real physical world. 
-This is important for the skills learned from FA to be useful for the real physical world.
-The number of symbols in $\Sigma$ is finite, but the number of images $\x \in X$ (e.g., images on the retina) from the real 
-physical world is unbounded, although finite at any finite age if the video stream is sampled at a fixed sampling rate (e.g., 
-30Hz).
- 
-Suppose that the GDN learning is frozen after learning the FA 
-but still run (generating responses) by taking sensory inputs beyond those of the FA,  
-the DN generalizes optimally.  It generates the Maximum Likelihood (ML) internal responses and 
-actions based on its experience of learning the FA.
-
-Suppose that the GDN has run out of its new $Y$ neurons as soon as it has finished
-simulating the FA.     
-If it still learns by updating its adaptive part, the 
-DN generalizes (``thinks'') optimally by generating the ML internal responses and actions 
-based on the limited network resource, the limited skills from FA, and
-real-world learning up to the last network update. 
-
-Our DN had several versions of experimental 
-embodiments, from networks for general object recognition from $360^\circ$ views,
-to Where-What Networks that detect (in free viewing), recognize, find (given type or location), multiple objects from natural complex backgrounds, to Multilayer In-place Learning Networks (MILN) that learn and process text of natural language (e.g., the part-of-speech tagging problem and the 
-chunking problem using natural languages from the Wall Street Journal), to Where-What Networks that 
-incrementally acquire early language from interactions with environments and also generalize. 
-Preliminary versions of the DN thinking process has been observed for vision 
-as the DN predicts while learning, and for language acquisition as the DN predicts across
-categories and super-set and subset while learning.   
-However, the experimental results from such DNs are difficult to understanding without a clear 
-theoretical framework here that links DNs with the well-known automata theory and the mathematical 
-properties presented as the three theorems.   
-
-In the next section, we discuss how novelty detection can be embedded into the DN. 
-
-\section{Novelty: Acetylcholine and Norepinenephrine}
+\subsection{Novelty: Acetylcholine and Norepinenephrine}
 Neurotransmitters are chemicals that allow the transmission of signals across synapses from one neuron to another. In the brain, several classes of neurotransmitters are used to connect one neuron to multiple neurons; this is called neural modulation. Neural modulation is needed in the brain to indicate certain properties about
 sensory and motor signals \cite{WengNAI12}. Brains without neural modulation simply
 respond to these signals and are not aware of the underlying properties that exist between them. This can be observed in children with ADHD who have trouble paying attention to detail. Neurons that are capable of neural modulation, such as acetylcholine and norepinephrine, are called neural modulators.
@@ -434,14 +260,14 @@ Markou \& Singh \cite{Markou03} identified the main criterion for evaluating neu
 
 In the work presented in this paper, we extend the developmental network proposed by Weng \cite{WengNAI12} to be a neuromorphic system using acetylcholine and norepinephrine to detect novelty in input patterns. The developmental network presented performs facial recognition.  
 
-\section{Modeling the Ach and NE Systems}
+\subsection{Modeling the Ach and NE Systems}
 Weng \cite{WengNAI12} introduced the theory for the neuromorphic, or emergent neuromodulation, system of acetylcholine (Ach) and norepinephrine (NE). Each neuron conducts synaptic maintenance, maintaining its synapses based on expected uncertainty, modeled by Ach, and unexpected uncertainty, modeled by NE. The goal of synaptic maintenance is to maximize the removal of irrelevant post-synaptic neurons, while minimizing the removal of relevant post-synaptic neurons, which in effect isolates the important information from the input.
 
 The input to each neuron is in the form $\mathbf{p}=(p_1,p_2,\dots,p_d)$ and its synaptic weight vector is represented by $\mathbf{v}=(v_1,v_2,\dots,v_d)$.
 
 The synapse of a firing top-k neuron $y$ contains information from the mean of the pre-synaptic activities, or input patterns, $x_i$. This can be written as:
 \begin{align}v_i=E[yp_i\; | \;\text{the neuron fires}] \end{align}
-which is calculated using the amnesic average \cite{WengNAI12}. Expected uncertainty is measured for each synapse $i$ by calculating the standard deviation of the match between $v_i$ and $p_i$:
+which is calculated using the amnesic average \cite{WengNAI12}. Expected uncertainty is measured for each synapse $i$ by calculating the deviation of the match between $v_i$ and $p_i$:
 \begin{align}\sigma_i=E[|v_i-p_i|\;|\;\text{the neuron fires}]\end{align}
 
 Ach needs to be calculated incrementally and stably. The measure of unexpected uncertainty in equation (2) must be initialized with constant values and must wait until all synaptic weights have sufficient estimates of $w_i$. Letting $n$ represent the firing age of the neuron, for each synapse $n \le n_0$, the synapse is initialized to the standard deviation of the uniform distribution in $[-\delta,\delta]$. This standard deviation needs to be plastic continuously, so a constant asymptotic learning rate is used. Letting $\sigma_i(n)$ represent $\sigma_i$ at firing age $n$, synapse deviation is computed incrementally (as Ach) as follows:
@@ -479,7 +305,7 @@ When testing, for each input pattern the top k firing neurons estimated the devi
 
 For the first training epoch the input images were ordered such that the network was presented one view of each person before seeing a new view of the same person, this was done to speed up training convergence.  For subsequent training epochs the images were presented to the network in a random order.
 
-For evaluating the network the admissible and not admissible set were created based on the idea that during any given day a person encounters many more faces of people they do not know (faces that the network should reject) than faces they do know.  Additionally the people encountered can be very well known (many training views) or only a casual acquaintance (few training views).  Admissible and not admissible images were selected from a set of a total of 1825 views of 188 people.  For the admissible set 14 people totaling 187 views were selected and used to train the network. The number of views for each individual ranging from 6 to 53. \ref{fig:training} shows the first view of the 14 people used to train the network and the number of views for each individual; person one is in the top left corner through person 14 in the lower right. The testing set consisted of 1638 views over all 188 people in the dataset.  Of these there were 295 views of the 14 people in the admissible set on and 1343 views of 174 people in the not admissible set.  
+For evaluating the network the admissible and not admissible set were created based on the idea that during any given day a person encounters many more faces of people they do not know (faces that the network should reject) than faces they do know.  Additionally the people encountered can be very well known (many training views) or only a casual acquaintance (few training views).  Admissible and not admissible images were selected from a set of a total of 1825 views of 188 people.  For the admissible set 14 people totaling 187 views were selected and used to train the network. The number of views for each individual ranging from 6 to 53. Fig. \~ref{fig:training} shows the first view of the 14 people used to train the network and the number of views for each individual; person one is in the top left corner through person 14 in the lower right. The testing set consisted of 1638 views over all 188 people in the dataset.  Of these there were 295 views of the 14 people in the admissible set on and 1343 views of 174 people in the not admissible set.  
 
 \begin{figure}
 \center
@@ -520,7 +346,7 @@ The development network was built using 25 neurons in the Y layer and trained ov
 \label{fig:roc}
 \end{figure}
 
-The sixth training epoch, where the highest sensitivity and specificity were achieved, was analyzed further.  First the pre-synaptic weights for the $Y$ and $Z$ layer were visualized.  \ref{fig:y_weights} shows the pre-synaptic weights for the Y layer; these images are essentially averages of the input images that each neuron responds to.  Then the expected variation for each Y neuron, $\sigma$ was plotted in \ref{fig:y_sigmas}.  Each pixel represented the amount of variation the specific $Y$ neuron expects from the $X$ layer neuron.  Darker pixels represent lower expected variation while lighter pixels represent inputs with higher expected variation.  Of note is the first Y neuron, which is trained to respond to the background image that is presented before each classification task.  The image is a picture of the background each person had their picture taken against and the same image was presented each time which is why the expected variation is 0, an all black image.  For the Z layer the pre-synaptic weights for each of plotted in \ref{fig:z_weights} 5 per line. The lighter a square is the higher the weight for that Y neuron.  The firing ages for each of the Y and Z neurons were graphed in \${fig:ages} which showed that three neurons (neurons 2, 11, and 22) were under-utilized, responding to only a single view from the admissible set.  This is also shown in \ref{fig:y_sigmas} as the black squares, representing no expected variation in the input for those neurons.
+The sixth training epoch, where the highest sensitivity and specificity were achieved, was analyzed further.  First the pre-synaptic weights for the $Y$ and $Z$ layer were visualized.  Fig. \~ref{fig:y\_weights} shows the pre-synaptic weights for the Y layer; these images are essentially averages of the input images that each neuron responds to.  Then the expected variation for each Y neuron, $\sigma$ was plotted in \ref{fig:y_sigmas}.  Each pixel represented the amount of variation the specific $Y$ neuron expects from the $X$ layer neuron.  Darker pixels represent lower expected variation while lighter pixels represent inputs with higher expected variation.  Of note is the first Y neuron, which is trained to respond to the background image that is presented before each classification task.  The image is a picture of the background each person had their picture taken against and the same image was presented each time which is why the expected variation is 0, an all black image.  For the Z layer the pre-synaptic weights for each of plotted in \ref{fig:z_weights} 5 per line. The lighter a square is the higher the weight for that Y neuron.  The firing ages for each of the Y and Z neurons were graphed in \${fig:ages} which showed that three neurons (neurons 2, 11, and 22) were under-utilized, responding to only a single view from the admissible set.  This is also shown in \ref{fig:y_sigmas} as the black squares, representing no expected variation in the input for those neurons.
 
 \begin{figure}
 \center
